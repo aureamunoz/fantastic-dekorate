@@ -16,10 +16,6 @@
 
 package org.springframework.samples.petclinic;
 
-import io.dekorate.helm.annotation.HelmChart;
-import io.dekorate.jib.annotation.JibBuild;
-import io.dekorate.knative.annotation.KnativeApplication;
-import io.dekorate.tekton.annotation.TektonApplication;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
