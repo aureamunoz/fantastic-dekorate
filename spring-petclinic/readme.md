@@ -207,5 +207,5 @@ Finally, deploy manifests by running:
 kubectl apply -f target/classes/META-INF/dekorate/kubernetes.yml
 ```
 
-The pet clinic application should be available at: http://sb-petclinic.127.0.0.1.nip.io/
+The pet clinic application should be available at: https://sb-petclinic.127.0.0.1.nip.io
 
