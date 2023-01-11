@@ -154,3 +154,58 @@ The Spring PetClinic sample application is released under version 2.0 of the [Ap
 [spring-petclinic-graphql]: https://github.com/spring-petclinic/spring-petclinic-graphql
 [spring-petclinic-kotlin]: https://github.com/spring-petclinic/spring-petclinic-kotlin
 [spring-petclinic-rest]: https://github.com/spring-petclinic/spring-petclinic-rest
+
+# Demo using Dekorate
+
+### Add Dekorate dependencies
+
+Enable Dekorate by adding following dependencies in the `pom.xml` file: 
+
+````xml
+    <dependency>
+      <groupId>io.dekorate</groupId>
+      <artifactId>kubernetes-spring-starter</artifactId>
+      <version>${kubernetes-spring-starter.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.dekorate</groupId>
+      <artifactId>jib-annotations</artifactId>
+      <version>${kubernetes-spring-starter.version}</version>
+    </dependency>
+````
+
+### Configure Dekorate to customize Kubernetes manifests
+
+Create an Ingress component to access the application from outside the cluster. Add following properties:
+
+````properties
+dekorate.kubernetes.ingress.expose=true
+dekorate.kubernetes.ingress.host=sb-petclinic.127.0.0.1.nip.io
+````
+
+Configure the container image properly by adding: 
+
+````properties
+dekorate.jib.registry=127.0.0.1:5000
+dekorate.jib.image=localhost:5000/amunozhe/spring-petclinic:2.0.0
+dekorate.jib.group=amunozhe
+dekorate.jib.name=spring-petclinic
+dekorate.jib.version=2.0.0
+````
+
+Then, package the application and generate manfiest by running:
+
+```shell
+mvn clean package -DskipTests -Ddekorate.build=true -Ddekorate.push=true
+```
+
+If everything went well the manifests are in the `target/classes/META-INF/dekorate/` folder and image has been pushed to the corresponding registry.
+
+Finally, deploy manifests by running:
+
+```shell
+kubectl apply -f target/classes/META-INF/dekorate/kubernetes.yml
+```
+
+The pet clinic application should be available at: http://sb-petclinic.127.0.0.1.nip.io/
+
